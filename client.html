@@ -1,35 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <title>HLS</title>
+    <meta charset=utf-8 />
+    <title>videojs-contrib-hls embed</title>
+
+    <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
+
 </head>
 <body>
-    <video id="video" width="1280" height="720" controls></video>
+<h1>Video.js Example Embed</h1>
 
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script>
-        const video = document.getElementById('video');
-        const src = '/videos/output.m3u8';
-        if(Hls.isSupported())
-        {
-            console.log('hls')
-            const hls = new Hls();
+<video-js id="my_video_1" class="video-js vjs-16-9" controls preload="auto" width="640" height="268">
+    <source src="http://arvin-hls.s3-eu-west-1.amazonaws.com/output.m3u8" type="application/x-mpegURL">
+</video-js>
 
-            hls.loadSource(src);
-            hls.attachMedia(video);
-            hls.on(Hls.Events.MANIFEST_PARSED, () =>
-            {
-                video.play();
-            })
-        } else if(video.canPlayType('application/vnd/apple.mpegurl'))
-        {
-            video.src = src;
-            video.addEventListener('loadedmetadata', () =>
-            {
-                video.play();
-            })
+<script src="https://unpkg.com/video.js/dist/video.js"></script>
+<script src="https://unpkg.com/@videojs/http-streaming/dist/videojs-http-streaming.js"></script>
+<script src="https://sans-foundations.com/js/nuevo.20201218828.min.js"></script>
+
+
+<script>
+    var player = videojs('my_video_1', {
+        plugins: {
+            "nuevo": {}
         }
-    </script>
+    });
+</script>
+
 </body>
 </html>

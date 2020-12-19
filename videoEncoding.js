@@ -6,13 +6,14 @@ ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 ffmpeg('videos/video.mp4').addOptions([
     '-y',
     '-hide_banner',
-    '-profile:v baseline',
     '-level 3.0',
     '-start_number 0',
     '-hls_time 5',
     '-hls_list_size 0',
     '-f hls',
-    '-preset ultrafast'
+    '-preset slow',
+    '-tune film',
+    '-vb 20M'
 ]).output('videos/output.m3u8')
     .on('progress', function(progress) {
         console.log(progress);
