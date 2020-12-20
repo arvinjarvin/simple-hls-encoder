@@ -3941,7 +3941,7 @@
         contextMenu: false
     })
 
-    let socket = io('ws://localhost:3000')
+    let socket = io('ws://simple-hls-server.herokuapp.com:3000')
 
     socket.on('stream_progress', (progress) =>
     {
