@@ -1,5 +1,6 @@
 const ffmpeg = require('fluent-ffmpeg');
 const ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
+const io = require('./rpc');
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path);
 
@@ -11,16 +12,20 @@ ffmpeg('videos/video.mp4').addOptions([
     '-hls_time 5',
     '-hls_list_size 0',
     '-f hls',
-    '-preset slow',
+    '-preset veryfast',
     '-tune film',
     '-vb 20M'
 ]).output('videos/output.m3u8')
+    .on('codecData', (data) =>
+    {
+        io.emit('codec_data', data)
+    })
     .on('progress', function(progress) {
-        console.log(progress);
+        io.emit('stream_progress', {...progress})
     })
     .on('end', () =>
     {
-        console.log('done')
+        io.emit('stream_finished');
     })
     .on('error', (e) =>
     {

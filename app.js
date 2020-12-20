@@ -1,4 +1,8 @@
 const app = require('express')();
+const morgan = require('morgan');
+app.use(morgan('dev'))
+const whois = require('node-whois')
+
 const fs = require('fs');
 const hls = require('hls-server');
 
@@ -7,7 +11,20 @@ app.get('/', (req, res) =>
     return res.status(200).sendFile(`${__dirname}/client.html`);
 })
 
-const server = app.listen(process.env.PORT || 3000);
+app.all('*', (req, res) =>
+{
+    console.log(req._remoteAddress);
+    whois.lookup('82.18.131.62', (e, d) =>
+    {
+        console.log(e, d)
+    })
+})
+
+
+const server = app.listen(process.env.PORT || 3000, () =>
+{
+    console.log(`Listening on port ${process.env.PORT || 3000}`);
+});
 
 new hls(server, {
     provider: {
@@ -36,3 +53,5 @@ new hls(server, {
         }
     }
 })
+
+module.exports = { server }
